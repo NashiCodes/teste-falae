@@ -1,21 +1,41 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/lib/src/app.js",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^5.0.1"
+    "express": "^5.0.1",
+    "jest": "^29.7.0",
+    "module-alias": "^2.2.3",
+    "pg": "^8.13.1",
+    "reflect-metadata": "^0.2.2",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "typeorm": "^0.3.20"
+  },
+  "_moduleAliases": {
+    "@/": "dist/lib/src"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon -r tsconfig-paths/register src/app.ts",
+    "start": "node dist/lib/src/app.js",
+    "build": "tsc && tsc-alias",
+    "postbuild": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/supertest": "^6.0.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.0",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.3"
   }
 }
