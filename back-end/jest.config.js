@@ -1,6 +1,3 @@
-const {pathsToModuleNameMapper} = require("ts-jest");
-
-
 module.exports = {
     // Automatically clear mock calls and instances between every test
     clearMocks: true,
@@ -15,5 +12,7 @@ module.exports = {
     // A map from regular expressions to paths to transformers
     moduleNameMapper: {
         "@/(.*)": "<rootDir>/src/$1",
-    }
+    },
+    // The glob patterns Jest uses to detect test files
+    setupFilesAfterEnv: ['<rootDir>/src/prisma/singleton.ts'],
 };
