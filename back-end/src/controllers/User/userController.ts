@@ -1,16 +1,18 @@
-import { Request, Response } from 'express';
-import {UserService} from "@/services/user/userServices";
+import {Request, Response} from 'express';
+import {userService} from "@/services/user/userServices";
+import {UserDtoRequest} from "@/models/user/userDto";
 
-export class UserController {
-    public userService: UserService;
 
-    constructor() {
-        this.userService = new UserService();
+const registerUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const user: UserDtoRequest = req.body;
+        const newUser = await userService.registerUser(user);
+        res.status(201).json({message: 'User ' + user.name + ' created successfully'});
+    } catch (err: any) {
+        res.status(400).json({message: err.message});
     }
+}
 
-    public async getUsers(req: Request, res: Response): Promise<void> {
-        const users = await this.userService.getAllUsers();
-        //return as array of users
-        res.status(200).json(users);
-    }
+export const userController = {
+    registerUser
 }

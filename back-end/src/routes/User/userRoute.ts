@@ -1,9 +1,8 @@
 import {Router} from "express";
-import {UserController} from "@/controllers/User/userController";
+import {userController} from "@/controllers/User/userController";
 
 const userRoute = Router({mergeParams: true});
-const userController = new UserController();
 
-userRoute.get("/", userController.getUsers);
+userRoute.post("/register", userController.registerUser);
 
 export default userRoute;

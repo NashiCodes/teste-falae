@@ -1,15 +1,11 @@
-import {UserRepository} from "@/repositories/user/userRepo";
+import {userRepository} from "@/repositories/user/userRepo";
+import {UserDtoRequest} from "@/models/user/userDto";
 import {User} from "@prisma/client";
 
-export class UserService {
-    private userRepository: UserRepository;
+const registerUser = async (user: UserDtoRequest): Promise<User> => {
+    return userRepository.create(user);
+}
 
-    constructor() {
-        this.userRepository = new UserRepository();
-    }
-
-    public async getAllUsers(): Promise<User[]> {
-        return this.userRepository.findAll();
-    }
-
+export const userService = {
+    registerUser
 }
