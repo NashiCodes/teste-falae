@@ -1,5 +1,6 @@
 import express from "express";
-import userRoute from "@/routes/User/userRoute";
+import userRoute from "@/routes/user/userRoute";
+import ProductRoute from "@/routes/products/productsRoute";
 
 const routes = express.Router({mergeParams: true});
 
@@ -9,6 +10,8 @@ routes.get("/", (req, res) => {
 });
 
 routes.use("/auth", userRoute);
+
+routes.use("/products", ProductRoute);
 
 
 export default routes;
