@@ -10,6 +10,51 @@ const getAllProducts = async (req: Request, res: Response) => {
     }
 }
 
+const createProduct = async (req: Request, res: Response) => {
+    try {
+        const product = req.body;
+        const newProduct = await productsService.createProduct(product);
+        res.status(201).json({message: 'Product ' + product.name + ' created successfully'});
+    } catch (err: any) {
+        res.status(400).json({message: err.message});
+    }
+}
+
+const getProductById = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        const product = await productsService.getProductById(id);
+        res.status(200).json(product);
+    } catch (err: any) {
+        res.status(400).json({message: err.message});
+    }
+}
+
+const updateProduct = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        const product = req.body;
+        await productsService.updateProduct(id, product);
+        res.status(200).json({message: 'Product updated successfully'});
+    } catch (err: any) {
+        res.status(400).json({message: err.message});
+    }
+}
+
+const deleteProduct = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        await productsService.deleteProduct(id);
+        res.status(200).json({message: 'Product deleted successfully'});
+    } catch (err: any) {
+        res.status(400).json({message: err.message});
+    }
+}
+
 export const productsController = {
-    getAllProducts
+    createProduct,
+    getAllProducts,
+    getProductById,
+    updateProduct,
+    deleteProduct
 }

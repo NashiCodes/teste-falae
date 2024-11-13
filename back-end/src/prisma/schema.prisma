@@ -14,32 +14,32 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  address   String 
-  phone     String?
+  id      String  @id @default(cuid())
+  name    String
+  email   String  @unique
+  address String
+  phone   String?
 }
 
 model Product {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   price       Float
   category    String
   description String?
-  imageUrls   String?
+  imageUrl    String?
 }
 
 model Order {
-  id        String   @id @default(cuid())
-  userId    String
+  id         String   @id @default(cuid())
+  userId     String
   totalPrice Float
-  status    String
-  createdAt DateTime @default(now())
+  status     String
+  createdAt  DateTime @default(now())
 }
 
 model OrderItem {
-  id        String   @id @default(cuid())
+  id        String @id @default(cuid())
   quantity  Int
   orderId   String
   productId String
