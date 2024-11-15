@@ -1,11 +1,14 @@
+import {Product} from "@prisma/client";
+
 interface OrdersDtoRequest {
     userId: string,
-    orderItem: OrderItemRequest[]
+    OrderItem: Array<OrderItemRequest>
 }
 
 interface OrderItemRequest {
-    id: string;
+    productId: string;
     quantity: number;
+    product?: Product
 }
 
 interface OrderItemResponse {

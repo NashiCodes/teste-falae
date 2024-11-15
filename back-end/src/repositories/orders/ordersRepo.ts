@@ -1,46 +1,38 @@
 import {OrdersDtoRequest} from "@/models/orders/ordersDto";
 import db from "@/prisma/client";
+import {Order, OrderItem} from "@prisma/client";
 
-const createOrder = async (newOrder: OrdersDtoRequest) => {
+const createOrder = async (newOrder: OrdersDtoRequest): Promise<Order> => {
     let totalPrice = 0;
+    let orderItems = newOrder.OrderItem;
 
-    let order = await db.order.create({
+    for (let orderItem of orderItems) {
+        const product = await db.product.findUnique({
+            where: {
+                id: orderItem.productId
+            }
+        })
+
+        if (!product) {
+            throw new Error('Product not found')
+        }
+
+        totalPrice += product.price * orderItem.quantity
+    }
+
+    return db.order.create({
         data: {
             userId: newOrder.userId,
             totalPrice: totalPrice,
-            status: 'Pendente'
-        }
-    })
+            status: 'PENDENTE',
+            OrderItem: {
+                createMany: {
+                    data: orderItems as OrderItem[]
 
-    for (const orderItem of newOrder.orderItem) {
-        let dbProduct = await db.product.findUnique({
-            where: {
-                id: orderItem.id
+                }
             }
-        })
-
-        if (!dbProduct) throw new Error('Product not found')
-
-        await db.orderItem.create({
-            data: {
-                orderId: order.id,
-                productId: dbProduct.id,
-                quantity: orderItem.quantity
-            }
-        })
-
-        totalPrice += dbProduct.price * orderItem.quantity
-    }
-
-    await db.order.update({
-        where: {
-            id: order.id
-        },
-        data: {
-            totalPrice: totalPrice
         }
-    })
-
+    });
 }
 export const ordersRepo = {
     createOrder

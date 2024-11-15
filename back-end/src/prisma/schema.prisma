@@ -22,25 +22,29 @@ model User {
 }
 
 model Product {
-  id          String  @id @default(cuid())
+  id          String      @id @default(cuid())
   name        String
   price       Float
   category    String
   description String?
   imageUrl    String?
+  OrderItem   OrderItem[]
 }
 
 model Order {
-  id         String   @id @default(cuid())
+  id         String      @id @default(cuid())
   userId     String
   totalPrice Float
   status     String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime    @default(now())
+  OrderItem  OrderItem[]
 }
 
 model OrderItem {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   quantity  Int
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   orderId   String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   productId String
 }
