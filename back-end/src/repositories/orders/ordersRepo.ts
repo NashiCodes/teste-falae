@@ -1,8 +1,8 @@
-import {OrdersDtoRequest} from "@/models/orders/ordersDto";
+import {OrderDtoRequest, OrderDtoResponse} from "@/models/orders/ordersDto";
 import db from "@/prisma/client";
 import {Order, OrderItem} from "@prisma/client";
 
-const createOrder = async (newOrder: OrdersDtoRequest): Promise<Order> => {
+const createOrder = async (newOrder: OrderDtoRequest): Promise<Order> => {
     let totalPrice = 0;
     let orderItems = newOrder.OrderItem;
 
@@ -23,8 +23,8 @@ const createOrder = async (newOrder: OrdersDtoRequest): Promise<Order> => {
     return db.order.create({
         data: {
             userId: newOrder.userId,
+            status: 'Pendente',
             totalPrice: totalPrice,
-            status: 'PENDENTE',
             OrderItem: {
                 createMany: {
                     data: orderItems as OrderItem[]
@@ -34,6 +34,71 @@ const createOrder = async (newOrder: OrdersDtoRequest): Promise<Order> => {
         }
     });
 }
+
+const updateOrder = async (orderId: string, status: string) => {
+    try {
+        await db.order.update({
+            where: {
+                id: orderId
+            },
+            data: {
+                status: status
+            }
+        });
+    } catch (e) {
+        throw new Error('Order not found');
+    }
+}
+
+const getOrderById = async (orderId: string): Promise<OrderDtoResponse> => {
+    const dbOrder = await db.order.findUnique({
+        where: {
+            id: orderId
+        },
+        include: {
+            OrderItem: {
+                include: {
+                    product: true
+                }
+            }
+        }
+    });
+
+    if (!dbOrder) {
+        throw new Error('Order not found');
+    }
+
+    return {
+        id: dbOrder.id,
+        totalPrice: dbOrder.totalPrice,
+        status: dbOrder.status,
+        createdAt: dbOrder.createdAt.toISOString(),
+        orderItem: dbOrder.OrderItem.map(orderItem => {
+            return {
+                name: orderItem.product.name,
+                quantity: orderItem.quantity,
+                price: orderItem.product.price
+            }
+        })
+    } as OrderDtoResponse;
+
+}
+
+const deleteOrder = async (orderId: string) => {
+    try {
+        await db.order.delete({
+            where: {
+                id: orderId
+            }
+        });
+    } catch (e) {
+        throw new Error('Order not found');
+    }
+
+}
 export const ordersRepo = {
-    createOrder
+    createOrder,
+    getOrderById,
+    updateOrder,
+    deleteOrder
 }

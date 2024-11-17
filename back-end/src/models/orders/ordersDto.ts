@@ -1,6 +1,6 @@
 import {Product} from "@prisma/client";
 
-interface OrdersDtoRequest {
+interface OrderDtoRequest {
     userId: string,
     OrderItem: Array<OrderItemRequest>
 }
@@ -25,4 +25,4 @@ interface OrderDtoResponse {
     orderItem: OrderItemResponse[]
 }
 
-export {OrdersDtoRequest, OrderDtoResponse, OrderItemRequest, OrderItemResponse}
+export {OrderDtoRequest, OrderDtoResponse, OrderItemRequest, OrderItemResponse}
