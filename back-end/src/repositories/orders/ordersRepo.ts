@@ -20,19 +20,23 @@ const createOrder = async (newOrder: OrderDtoRequest): Promise<Order> => {
         totalPrice += product.price * orderItem.quantity
     }
 
-    return db.order.create({
-        data: {
-            userId: newOrder.userId,
-            status: 'Pendente',
-            totalPrice: totalPrice,
-            OrderItem: {
-                createMany: {
-                    data: orderItems as OrderItem[]
+    try {
+        return await db.order.create({
+            data: {
+                userId: newOrder.userId,
+                status: 'Pendente',
+                totalPrice: totalPrice,
+                OrderItem: {
+                    createMany: {
+                        data: orderItems as OrderItem[]
 
+                    }
                 }
             }
-        }
-    });
+        });
+    } catch (e) {
+        throw new Error('Error creating order');
+    }
 }
 
 const updateOrder = async (orderId: string, status: string) => {
