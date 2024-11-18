@@ -13,23 +13,36 @@ const createProduct = async (productRequest: ProductDtoRequest): Promise<Product
     });
 }
 
-const getProductById = async (id: string): Promise<Product | null> => {
-    return db.product.findUnique({
+const getProductById = async (id: string): Promise<Product> => {
+    const product = await db.product.findUnique({
         where: {id}
     });
+
+    if (!product) throw new Error('Product not found');
+
+    return product;
 }
 
 const updateProduct = async (id: string, productRequest: ProductDtoRequest): Promise<Product> => {
-    return db.product.update({
-        where: {id},
-        data: productRequest
-    });
+
+    try {
+        return db.product.update({
+            where: {id},
+            data: productRequest
+        });
+    } catch (e) {
+        throw new Error('Product not found');
+    }
 }
 
-const deleteProduct = async (id: string): Promise<Product> => {
-    return db.product.delete({
-        where: {id}
-    });
+const deleteProduct = async (id: string) => {
+    try {
+        await db.product.delete({
+            where: {id}
+        });
+    } catch (e) {
+        throw new Error('Product not found');
+    }
 }
 
 export const productRepo = {

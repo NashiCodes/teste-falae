@@ -18,25 +18,15 @@ const createProduct = async (productRequest: ProductDtoRequest) => {
 }
 
 const getProductById = async (id: string) => {
-    const product = await productRepo.getProductById(id);
-
-    if (!product) throw new Error('Product not found');
-
-    return product;
+    return await productRepo.getProductById(id);
 }
 
 const updateProduct = async (id: string, productRequest: ProductDtoRequest) => {
-    const productUpdated = await productRepo.updateProduct(id, productRequest);
-
-    if (!productUpdated) throw new Error('Product not found');
-
-    return productUpdated;
+    return await productRepo.updateProduct(id, productRequest);
 }
 
 const deleteProduct = async (id: string) => {
-    const productDeleted = await productRepo.deleteProduct(id);
-
-    if (!productDeleted) throw new Error('Product not found');
+    return await productRepo.deleteProduct(id);
 }
 
 
