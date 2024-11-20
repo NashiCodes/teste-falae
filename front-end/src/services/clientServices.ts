@@ -1,8 +1,6 @@
-import {Client} from "@/models/clients.ts";
 
-export const fetchClients = async (): Promise<Client[]> => {
-    const response = await fetch('http://localhost:5000/api/auth/');
-    return await response.json();
+export const fetchClients = async () => {
+    return await fetch('http://localhost:5000/api/auth/').then(data => data.json())
 }
 
 // export const registerClient = async (client: registerClient): Promise<Client> => {

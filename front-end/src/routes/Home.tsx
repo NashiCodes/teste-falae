@@ -1,75 +1,110 @@
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
 import {Tabs, TabsContent, TabsList, TabsTrigger,} from "@/components/ui/tabs"
 import {useEffect, useState} from "react";
 import {fetchClients} from "@/services/clientServices.ts";
-import {Client} from "@/models/clients.ts";
+import {Client} from "@/models/clients/clients.ts";
+import {fetchProducts} from "@/services/productServices.ts";
+import {Product} from "@/models/products/products.ts";
+import {fetchOrders} from "@/services/orderServices.ts";
+import {Order} from "@/models/orders/orders.ts";
+import {DataTable} from "@/components/data-table.tsx";
+import {ClientColumns} from "@/models/clients/columns.tsx";
+import {ProductsCarousel} from "@/models/products/productsCarousel.tsx";
+import {OrderColumns} from "@/models/orders/columns.tsx";
+import hamburger from "@/assets/hamburguer.png";
+import Pizza from "@/assets/pizza.png";
+import Dessert from "@/assets/dessert.png";
 
 export default function Home() {
     const [clients, setClients] = useState([] as Client[])
+    const [products, setProducts] = useState([] as Product[])
+    const [orders, setOrders] = useState([] as Order[])
 
     useEffect(() => {
-        fetchClients().then((clients) => {
-            setClients(clients)
-        })
+        fetchClients().then(data => {
+            setClients(data);
+        });
 
-    }, [])
+        fetchProducts().then(data => {
+            setProducts(data);
+        });
+
+        fetchOrders().then(data => {
+            setOrders(data);
+        });
+
+    }, []);
 
     return (
-        <Tabs defaultValue="products" className="w-[400px]">
-            <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="clients">Clientes</TabsTrigger>
-                <TabsTrigger value="products">Produtos</TabsTrigger>
-                <TabsTrigger value="orders">Pedidos</TabsTrigger>
-            </TabsList>
-            <TabsContent value="clients">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Account</CardTitle>
-                        <CardDescription>
-                            Make changes to your account here. Click save when you're done.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <div className="space-y-1">
-                            <Label htmlFor="name">Name</Label>
-                            <Input id="name" defaultValue="Pedro Duarte"/>
-                        </div>
-                        <div className="space-y-1">
-                            <Label htmlFor="username">Username</Label>
-                            <Input id="username" defaultValue="@peduarte"/>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <Button>Save changes</Button>
-                    </CardFooter>
-                </Card>
-            </TabsContent>
-            <TabsContent value="password">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Password</CardTitle>
-                        <CardDescription>
-                            Change your password here. After saving, you'll be logged out.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <div className="space-y-1">
-                            <Label htmlFor="current">Current password</Label>
-                            <Input id="current" type="password"/>
-                        </div>
-                        <div className="space-y-1">
-                            <Label htmlFor="new">New password</Label>
-                            <Input id="new" type="password"/>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <Button>Save password</Button>
-                    </CardFooter>
-                </Card>
-            </TabsContent>
-        </Tabs>
+        //Div principal
+        <div className="flex justify-around justify-self-auto h-fit p-5 m-5">
+
+            {/*Tabs clientes, produtos e pedidos do lado esquerdo        */}
+            <Tabs defaultValue="products" className="w-[400px] m-5 justify-items-center">
+                <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="clients">Clientes</TabsTrigger>
+                    <TabsTrigger value="products">Produtos</TabsTrigger>
+                    <TabsTrigger value="orders">Pedidos</TabsTrigger>
+                </TabsList>
+                <TabsContent value="clients" className="space-y-4 w-fit">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Clientes</CardTitle>
+                            <CardDescription>
+                                Clientes cadastrados no sistema
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <DataTable columns={ClientColumns} data={clients}/>
+                        </CardContent>
+                        <CardFooter>
+                            <Button>Save changes</Button>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+                <TabsContent value="products" className="space-y-4 w-fit">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Produtos</CardTitle>
+                            <CardDescription>
+                                Produtos cadastrados no sistema
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <ProductsCarousel products={products}/>
+                        </CardContent>
+                        <CardFooter>
+                            <Button>Save password</Button>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+                <TabsContent value="orders" className="space-y-4 w-fit">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Pedidos</CardTitle>
+                            <CardDescription>
+                                Pedidos cadastrados no sistema
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <DataTable columns={OrderColumns} data={orders}/>
+                        </CardContent>
+                        <CardFooter>
+                            <Button>Save changes</Button>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+            </Tabs>
+
+            {/*Imagens de Comidas do lado direito das tabs*/}
+            <div className="relative justify-end">
+                {/*One image overlapping the other*/}
+                <img src={hamburger}  alt="hamburger" className="w-80 h-80 relative right-1/4"/>
+                <img src={Pizza}  alt="pizza" className="w-80 h-80 -mt-20 absolute left-1/2 top-52"/>
+                <img src={Dessert} alt="dessert" className="w-80 h-80 absolute right-2/4 top-72" />
+            </div>
+
+        </div>
     )
 }
