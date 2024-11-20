@@ -25,6 +25,10 @@ const updateOrder = async (orderId: string, status: string) => {
     return await ordersRepo.updateOrder(orderId, status);
 }
 
+const getAllOrders = async () => {
+    return await ordersRepo.getAllOrders();
+}
+
 const getOrderById = async (orderId: string) => {
     if (orderId === '' || !orderId) throw new Error('orderId is a required field');
 
@@ -40,6 +44,7 @@ const deleteOrder = async (orderId: string) => {
 export const ordersService = {
     createOrder,
     getOrderById,
+    getAllOrders,
     updateOrder,
     deleteOrder
 }

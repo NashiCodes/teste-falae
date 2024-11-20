@@ -53,6 +53,33 @@ const updateOrder = async (orderId: string, status: string) => {
         throw new Error('Order not found');
     }
 }
+const getAllOrders = async (): Promise<OrderDtoResponse[]> => {
+    const dbOrders = await db.order.findMany({
+        include: {
+            OrderItem: {
+                include: {
+                    product: true
+                }
+            }
+        }
+    });
+
+    return dbOrders.map(dbOrder => {
+        return {
+            id: dbOrder.id,
+            totalPrice: dbOrder.totalPrice,
+            status: dbOrder.status,
+            createdAt: dbOrder.createdAt.toISOString(),
+            orderItem: dbOrder.OrderItem.map(orderItem => {
+                return {
+                    name: orderItem.product.name,
+                    quantity: orderItem.quantity,
+                    price: orderItem.product.price
+                }
+            })
+        } as OrderDtoResponse;
+    });
+}
 
 const getOrderById = async (orderId: string): Promise<OrderDtoResponse> => {
     const dbOrder = await db.order.findUnique({
@@ -103,6 +130,7 @@ const deleteOrder = async (orderId: string) => {
 export const ordersRepo = {
     createOrder,
     getOrderById,
+    getAllOrders,
     updateOrder,
     deleteOrder
 }

@@ -5,4 +5,6 @@ const userRoutes = Router({mergeParams: true});
 
 userRoutes.post("/register", userController.registerUser);
 
+userRoutes.get("/", userController.getAllUsers);
+
 export default userRoutes;

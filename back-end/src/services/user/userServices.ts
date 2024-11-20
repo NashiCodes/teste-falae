@@ -8,9 +8,14 @@ const registerUser = async (user: UserDtoRequest): Promise<User> => {
     if (user.email === '') throw new Error('Email is required');
     if (user.address === '') throw new Error('Address is required');
 
-    return userRepository.create(user);
+    return await userRepository.create(user);
+}
+
+const getAllUsers = async (): Promise<User[]> => {
+    return await userRepository.getAll();
 }
 
 export const userService = {
-    registerUser
+    registerUser,
+    getAllUsers
 }

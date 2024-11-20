@@ -13,8 +13,12 @@ const create = async (user: UserDtoRequest): Promise<User> => {
 
 }
 
+const getAll = async (): Promise<User[]> => {
+    return db.user.findMany();
+}
+
 const existEmail = async (email: string): Promise<boolean> => {
-    
+
     const user = await db.user.findUnique({
         where: {email}
     });
@@ -23,4 +27,5 @@ const existEmail = async (email: string): Promise<boolean> => {
 }
 export const userRepository = {
     create,
+    getAll
 }

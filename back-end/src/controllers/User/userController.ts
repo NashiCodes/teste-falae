@@ -13,6 +13,16 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const users = await userService.getAllUsers();
+        res.status(200).json(users);
+    } catch (err: any) {
+        res.status(400).json({message: err.message});
+    }
+}
+
 export const userController = {
-    registerUser
+    registerUser,
+    getAllUsers
 }

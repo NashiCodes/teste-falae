@@ -25,6 +25,16 @@ const updateOrder = async (req: Request, res: Response) => {
 
 }
 
+const getAllOrders = async (req: Request, res: Response) => {
+    try {
+        const orders = await ordersService.getAllOrders();
+        res.status(200).json(orders);
+    } catch (err: any) {
+        res.status(400).json({message: err.message});
+    }
+
+}
+
 const getOrderById = async (req: Request, res: Response) => {
     try {
         const orderId = req.params.id;
@@ -50,6 +60,7 @@ const deleteOrder = async (req: Request, res: Response) => {
 export const ordersController = {
     createOrder,
     getOrderById,
+    getAllOrders,
     updateOrder,
     deleteOrder
 }
