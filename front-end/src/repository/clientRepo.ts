@@ -19,13 +19,16 @@ const createClient = async (client: clientResgister): Promise<Client> => {
 
     const data = await response.json();
 
-    if (response.ok)
+    if (response.ok) {
+        clients.push(data.user);
         return data.user;
+    }
 
     throw new Error(data.message)
 
 }
 
 export const clientRepo = {
-    getAllClients
+    getAllClients,
+    createClient
 }

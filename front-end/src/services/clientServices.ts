@@ -6,19 +6,5 @@ export const getAllClients = async () => {
 }
 
 export const createClient = async (client: clientResgister): Promise<Client> => {
-    const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(client)
-    })
-
-    const data = await response.json();
-
-    if (response.ok)
-        return data.user;
-
-    throw new Error(data.message)
-
+    return clientRepo.createClient(client)
 }
