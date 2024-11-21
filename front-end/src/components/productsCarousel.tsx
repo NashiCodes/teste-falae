@@ -1,6 +1,6 @@
-import {Card, CardContent} from "@/components/ui/card"
-import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,} from "@/components/ui/carousel"
-import {Product} from "@/models/products/products.ts";
+import {Card, CardContent} from "@/components/ui/card.tsx"
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,} from "@/components/ui/carousel.tsx"
+import {Product} from "@/models/products.ts";
 import hamburger from "@/assets/hamburguer.png";
 
 interface ProductsCarouselProps {

@@ -1,5 +1,5 @@
 import {ColumnDef} from "@tanstack/react-table";
-import {Order} from "@/models/orders/orders.ts";
+import {Order} from "@/models/orders.ts";
 
 export const OrderColumns: ColumnDef<Order>[] = [
     {
