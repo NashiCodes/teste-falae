@@ -1,11 +1,14 @@
 import {Client, clientResgister} from "@/lib/types.ts";
-import {clientRepo} from "@/repository/clientRepo.ts";
 
-export const getAllClients = async () => {
-    return clientRepo.getAllClients();
+export let clients = Array<Client>();
+
+const getAllClients = async () => {
+    await fetch('http://localhost:5000/api/auth/').then(async data => {
+        clients = await data.json() as Client[];
+    })
 }
 
-export const createClient = async (client: clientResgister): Promise<Client> => {
+const createClient = async (client: clientResgister): Promise<Client> => {
     const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
@@ -21,4 +24,8 @@ export const createClient = async (client: clientResgister): Promise<Client> => 
 
     throw new Error(data.message)
 
+}
+
+export const clientRepo = {
+    getAllClients
 }

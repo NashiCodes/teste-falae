@@ -42,7 +42,7 @@ const schemaToLabels: toLabels[] = [
 
 ]
 
-export function RegisterProduct() {
+export function RegisterOrder() {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),

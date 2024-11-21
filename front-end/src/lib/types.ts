@@ -53,3 +53,9 @@ export type ProductRegister = {
     description: string;
     imageUrl?: string;
 }
+
+export type toLabels = {
+    name: string,
+    label: string,
+    placeholder: string
+}

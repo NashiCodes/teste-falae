@@ -1,41 +1,63 @@
 import {useEffect, useState} from "react";
-import {fetchClients} from "@/services/clientServices.ts";
 import {fetchProducts} from "@/services/productServices.ts";
-import {fetchOrders} from "@/services/orderServices.ts";
-import hamburger from "@/assets/hamburguer.png";
-import Pizza from "@/assets/pizza.png";
-import Dessert from "@/assets/dessert.png";
-import {MainTabs} from "@/components/main-tabs.tsx";
-import {Client, Order, Product} from "@/lib/types.ts";
+import {Product} from "@/lib/types.ts";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {ProductsCarousel} from "@/components/productsCarousel.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {CategoryComboBox} from "@/components/combobox.tsx";
+
+const productsCategories = (products: Product[]) => {
+    const categories = products.map(product => {
+        return {
+            value: product.category,
+            label: product.category
+        }
+    });
+    return categories.filter((category, index, self) =>
+        self.findIndex(t => t.value === category.value) === index
+    );
+}
 
 export default function MainContent() {
-    const [clients, setClients] = useState([] as Client[])
-    const [products, setProducts] = useState([] as Product[])
-    const [orders, setOrders] = useState([] as Order[])
+    const [products, setProducts] = useState([] as Product[]);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [isSelected, setIsSelected] = useState(false);
 
     useEffect(() => {
-        fetchClients().then(data => {
-            setClients(data);
-        });
-
         fetchProducts().then(data => {
             setProducts(data);
         });
-
-        fetchOrders().then(data => {
-            setOrders(data);
-        });
-
     }, []);
 
+    useEffect(() => {
+        if (selectedCategory === "") {
+            setIsSelected(false);
+        } else {
+            setIsSelected(true);
+        }
+
+    }, [selectedCategory]);
+
+    const categories = productsCategories(products);
+
     return (
-        <div className="flex justify-around justify-self-auto h-fit p-5 bg-secondary w-full rounded-2xl">
-            <MainTabs clients={clients} products={products} orders={orders}/>
-            <div className="relative justify-end">
-                <img src={hamburger} alt="hamburger" className="w-80 h-80 relative right-1/4"/>
-                <img src={Pizza} alt="pizza" className="w-80 h-80 -mt-20 absolute left-1/2 top-52"/>
-                <img src={Dessert} alt="dessert" className="w-80 h-80 absolute right-2/4 top-72"/>
-            </div>
-        </div>
+        <Card className="h-fit w-max">
+            <CardHeader>
+                <CardTitle>Produtos</CardTitle>
+                <CardDescription>
+                    Produtos cadastrados no sistema
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+                <CategoryComboBox categories={categories} setSelectedCategory={setSelectedCategory}/>
+                <ProductsCarousel
+                    products={isSelected ? products.filter(product => product.category === selectedCategory) : products}/>
+            </CardContent>
+            <CardFooter>
+                <Button>
+                    <a href="/products/register">Registrar produto</a>
+                </Button>
+            </CardFooter>
+        </Card>
     )
 }
