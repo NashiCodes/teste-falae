@@ -1,5 +1,5 @@
 import {ColumnDef} from "@tanstack/react-table";
-import {Client} from "@/models/clients.ts";
+import {Client} from "@/lib/types.ts";
 
 export const ClientColumns: ColumnDef<Client>[] = [
     {

@@ -5,9 +5,7 @@ import {ClientColumns} from "@/components/clients-columns.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {ProductsCarousel} from "@/components/productsCarousel.tsx";
 import {OrderColumns} from "@/components/orders-columns.tsx";
-import {Client} from "@/models/clients.ts";
-import {Product} from "@/models/products.ts";
-import {Order} from "@/models/orders.ts";
+import {Client, Order, Product} from "@/lib/types.ts";
 
 
 type tabsProps = {

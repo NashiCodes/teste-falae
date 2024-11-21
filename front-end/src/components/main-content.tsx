@@ -1,14 +1,12 @@
 import {useEffect, useState} from "react";
 import {fetchClients} from "@/services/clientServices.ts";
-import {Client} from "@/models/clients.ts";
 import {fetchProducts} from "@/services/productServices.ts";
-import {Product} from "@/models/products.ts";
 import {fetchOrders} from "@/services/orderServices.ts";
-import {Order} from "@/models/orders.ts";
 import hamburger from "@/assets/hamburguer.png";
 import Pizza from "@/assets/pizza.png";
 import Dessert from "@/assets/dessert.png";
 import {MainTabs} from "@/components/main-tabs.tsx";
+import {Client, Order, Product} from "@/lib/types.ts";
 
 export default function MainContent() {
     const [clients, setClients] = useState([] as Client[])
