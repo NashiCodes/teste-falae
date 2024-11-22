@@ -1,3 +1,10 @@
-export const fetchOrders = async () => {
-    return await fetch('http://localhost:5000/api/orders/').then(data => data.json())
+import {ordersRepo} from "@/repository/ordersRepo.ts";
+import {Order, OrderRegister} from "@/lib/types.ts";
+
+export const getAllOrders = async () => {
+    return await ordersRepo.getAllOrders();
+}
+
+export const createOrder = async (order: OrderRegister): Promise<Order> => {
+    return await ordersRepo.createOrder(order)
 }

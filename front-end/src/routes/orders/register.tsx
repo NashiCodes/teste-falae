@@ -1,72 +1,55 @@
-import {z} from "zod";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {ProductRegister, toLabels} from "@/lib/types.ts";
-import {createProduct} from "@/services/productServices.ts";
-import {CustomForm} from "@/components/customForm.tsx";
 import SideBar from "@/components/layout-sidebar.tsx";
-
-const formSchema = z.object({
-    name: z.string().min(10).max(50),
-    price: z.coerce.number().nonnegative(),
-    category: z.string().min(5).max(50),
-    description: z.string().min(10).max(50),
-    imageUrl: z.string().optional(),
-});
-const schemaToLabels: toLabels[] = [
-    {
-        name: "name",
-        label: "Nome",
-        placeholder: "Digite o nome do produto..."
-    },
-    {
-        name: "price",
-        label: "Preço",
-        placeholder: "Digite o preço do produto..."
-    },
-    {
-        name: "category",
-        label: "Categoria",
-        placeholder: "Digite a categoria do produto..."
-    },
-    {
-        name: "description",
-        label: "Descrição",
-        placeholder: "Digite a Descrição do produto..."
-    },
-    {
-        name: "imageUrl",
-        label: "Url da imagem do produto",
-        placeholder: "Digite a url da imagem do produto..."
-    },
-
-]
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {useEffect, useState} from "react";
+import {Client, OrderItemRegister, Product} from "@/lib/types.ts";
+import {ClientRegisterTable} from "@/components/client-register-table.tsx";
+import {ClientColumns} from "@/components/clients-columns.tsx";
+import {ProductResgiterTable} from "@/components/product-register-table.tsx";
+import {ProductsColumns} from "@/components/products-columns.tsx";
+import {createOrder} from "@/services/orderServices.ts";
 
 export function RegisterOrder() {
+    const [selectedClient, setSelectedClient] = useState("")
+    const [isClientSelected, setIsClientSelected] = useState(false)
+    const [selectedProducts, setSelectedProducts] = useState(Array<OrderItemRegister>)
+    const clients = JSON.parse(localStorage.getItem("clients") || "[]") as Array<Client>
+    const products = JSON.parse(localStorage.getItem("products") || "[]") as Array<Product>
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            name: '',
-            price: 0,
-            category: '',
-            description: '',
-            imageUrl: '',
+    useEffect(() => {
+        if (selectedClient === "") {
+            setIsClientSelected(false)
+        } else {
+            setIsClientSelected(true)
         }
-    });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        try {
-            await createProduct(values as ProductRegister)
-        } catch (e) {
-            alert((e as Error).message);
+        if (selectedProducts.length !== 0) {
+            createOrder({userId: selectedClient, OrderItem: selectedProducts as Array<OrderItemRegister>}).then(r => 
+                console.log(r)
+            )
         }
-    }
+
+    }, [selectedClient])
+
 
     return (
         <>
             <SideBar>
-                <CustomForm title="Produtos" description="Cadastre um novo produto" formSchema={formSchema} form={form} schemaToLabels={schemaToLabels} onSubmit={onSubmit}/>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Registrar pedido</CardTitle>
+                        <CardDescription>
+                            Preencha os campos abaixo para registrar um novo pedido.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {!isClientSelected ? (
+                            <ClientRegisterTable columns={ClientColumns} data={clients}
+                                                 setSelectedClient={setSelectedClient}/>) : (
+                            <ProductResgiterTable columns={ProductsColumns} data={products}
+                                                  setSelectedProduct={setSelectedProducts}/>
+                        )}
+                    </CardContent>
+                </Card>
             </SideBar>
         </>
     )

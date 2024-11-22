@@ -7,6 +7,8 @@ import {ThemeProvider} from "@/components/theme-provider.tsx";
 import {RegisterClient} from "@/routes/clients/register.tsx";
 import {RegisterProduct} from "@/routes/products/register.tsx";
 import {RegisterOrder} from "@/routes/orders/register.tsx";
+import {getAllClients} from "@/services/clientServices.ts";
+import {fetchProducts} from "@/services/productServices.ts";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +28,9 @@ const router = createBrowserRouter([
         element: <RegisterOrder/>
     }
 ]);
+
+await getAllClients();
+await fetchProducts();
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

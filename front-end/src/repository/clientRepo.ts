@@ -1,10 +1,9 @@
 import {Client, clientResgister} from "@/lib/types.ts";
 
-export let clients = Array<Client>();
 
 const getAllClients = async () => {
     await fetch('http://localhost:5000/api/auth/').then(async data => {
-        clients = await data.json() as Client[];
+        localStorage.setItem('clients', JSON.stringify(await data.json()));
     })
 }
 
@@ -20,8 +19,10 @@ const createClient = async (client: clientResgister): Promise<Client> => {
     const data = await response.json();
 
     if (response.ok) {
-        clients.push(data.user);
-        return data.user;
+        const clients = JSON.parse(localStorage.getItem('clients') || '[]') as Client[];
+        const client = await data.json() as Client;
+        clients.push(client);
+        return client;
     }
 
     throw new Error(data.message)

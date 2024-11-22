@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {fetchProducts} from "@/services/productServices.ts";
 import {Product} from "@/lib/types.ts";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {ProductsCarousel} from "@/components/productsCarousel.tsx";
@@ -19,15 +18,10 @@ const productsCategories = (products: Product[]) => {
 }
 
 export default function MainContent() {
-    const [products, setProducts] = useState([] as Product[]);
+    const products = JSON.parse(localStorage.getItem("products") || "[]") as Array<Product>;
     const [selectedCategory, setSelectedCategory] = useState("");
     const [isSelected, setIsSelected] = useState(false);
 
-    useEffect(() => {
-        fetchProducts().then(data => {
-            setProducts(data);
-        });
-    }, []);
 
     useEffect(() => {
         if (selectedCategory === "") {
