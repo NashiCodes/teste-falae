@@ -7,7 +7,7 @@ import {ThemeProvider} from "@/components/theme-provider.tsx";
 import {RegisterClient} from "@/routes/clients/register.tsx";
 import {RegisterProduct} from "@/routes/products/register.tsx";
 import {RegisterOrder} from "@/routes/orders/register.tsx";
-import {getAllClients} from "@/services/clientServices.ts";
+import {fetchClients} from "@/services/clientServices.ts";
 import {fetchProducts} from "@/services/productServices.ts";
 
 const router = createBrowserRouter([
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     }
 ]);
 
-await getAllClients();
+await fetchClients();
 await fetchProducts();
 
 createRoot(document.getElementById('root')!).render(

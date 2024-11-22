@@ -20,9 +20,9 @@ const createClient = async (client: clientResgister): Promise<Client> => {
 
     if (response.ok) {
         const clients = JSON.parse(localStorage.getItem('clients') || '[]') as Client[];
-        const client = await data.json() as Client;
-        clients.push(client);
-        return client;
+        clients.push(data as Client);
+        localStorage.setItem('clients', JSON.stringify(clients));
+        return data as Client;
     }
 
     throw new Error(data.message)

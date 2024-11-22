@@ -19,8 +19,9 @@ const createProduct = async (product: ProductRegister): Promise<Product> => {
 
     if (response.ok) {
         const products = JSON.parse(localStorage.getItem('products') || '[]') as Product[];
-        const product = await data.json() as Product;
+        const product = data as Product;
         products.push(product);
+        localStorage.setItem('products', JSON.stringify(products));
         return product;
     }
 

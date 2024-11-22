@@ -1,7 +1,7 @@
 import {Client, clientResgister} from "@/lib/types.ts";
 import {clientRepo} from "@/repository/clientRepo.ts";
 
-export const getAllClients = async () => {
+export const fetchClients = async () => {
     return await clientRepo.getAllClients();
 }
 

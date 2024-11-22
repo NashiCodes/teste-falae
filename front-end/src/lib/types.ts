@@ -44,7 +44,6 @@ export type Product = {
     category: string;
     description: string;
     imageUrl?: string;
-    quantity?: number;
 }
 
 export type ProductRegister = {

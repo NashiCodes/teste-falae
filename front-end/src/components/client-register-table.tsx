@@ -22,7 +22,7 @@ import {Client} from "@/lib/types.ts";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
-    setSelectedClient: React.Dispatch<React.SetStateAction<string>>
+    setSelectedClient: React.Dispatch<React.SetStateAction<Client>>
 }
 
 export function ClientRegisterTable<TData, TValue>({
@@ -53,7 +53,7 @@ export function ClientRegisterTable<TData, TValue>({
         },
     })
 
-    const handleSelect = (currentValue: string) => {
+    const handleSelect = (currentValue: Client) => {
         setSelectedClient(currentValue);
         console.log(currentValue)
     }
@@ -106,7 +106,7 @@ export function ClientRegisterTable<TData, TValue>({
                                                     (
                                                         <Button
                                                             variant="ghost"
-                                                            onClick={() => handleSelect((cell.row.original as Client).id)}
+                                                            onClick={() => handleSelect((cell.row.original as Client))}
                                                         >
                                                             Selecionar
                                                         </Button>

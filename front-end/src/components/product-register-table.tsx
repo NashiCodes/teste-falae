@@ -7,7 +7,7 @@ import {
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
-    getSortedRowModel,
+    getSortedRowModel, PaginationState,
     SortingState,
     useReactTable,
 } from "@tanstack/react-table"
@@ -17,12 +17,12 @@ import * as React from "react";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import {OrderItemRegister, Product} from "@/lib/types.ts";
+import {Product} from "@/lib/types.ts";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
-    setSelectedProduct: React.Dispatch<React.SetStateAction<OrderItemRegister[]>>
+    setSelectedProduct: React.Dispatch<React.SetStateAction<Product[]>>
 }
 
 export function ProductResgiterTable<TData, TValue>({
@@ -30,8 +30,10 @@ export function ProductResgiterTable<TData, TValue>({
                                                         data,
                                                         setSelectedProduct,
                                                     }: DataTableProps<TData, TValue>) {
-
     const [sorting, setSorting] = useState<SortingState>([])
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0, pageSize: 5,
+    })
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = useState({})
 
@@ -41,6 +43,7 @@ export function ProductResgiterTable<TData, TValue>({
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        onPaginationChange: setPagination,
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
@@ -48,14 +51,17 @@ export function ProductResgiterTable<TData, TValue>({
         onRowSelectionChange: setRowSelection,
         state: {
             sorting,
+            pagination,
             columnFilters,
             rowSelection,
         },
     })
 
-    const handleSelect = (currentValue: OrderItemRegister[]) => {
-        setSelectedProduct(currentValue);
-        console.log(currentValue)
+    const handleSelect = () => {
+        const selectedProducts = table.getRowModel().rows.filter(row => row.getIsSelected()).map(row => {
+            return row.original as Product
+        })
+        setSelectedProduct(selectedProducts)
     }
 
 
@@ -102,16 +108,7 @@ export function ProductResgiterTable<TData, TValue>({
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
                                             {
-                                                cell.column.columnDef.header === "Quantidade" ?
-                                                    (
-                                                        <Input
-                                                            type="number"
-                                                            placeholder="Quantidade"
-                                                            value={(cell.row.original as Product).quantity}
-                                                        />
-                                                    ) : (
-                                                        flexRender(cell.column.columnDef.cell, cell.getContext())
-                                                    )
+                                                (flexRender(cell.column.columnDef.cell, cell.getContext()))
                                             }
                                         </TableCell>
                                     ))}
@@ -128,6 +125,9 @@ export function ProductResgiterTable<TData, TValue>({
                 </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
+                <Button
+                    onClick={handleSelect}
+                >Inserir Quantidades</Button>
                 <Button
                     variant="outline"
                     size="sm"
@@ -148,3 +148,4 @@ export function ProductResgiterTable<TData, TValue>({
         </div>
     )
 }
+
