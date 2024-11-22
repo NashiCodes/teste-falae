@@ -2,7 +2,7 @@ interface ProductDtoRequest {
     name: string;
     price: number;
     category: string;
-    description: string;
+    description?: string;
     imageUrl?: string;
 }
 

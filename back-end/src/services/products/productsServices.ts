@@ -12,7 +12,6 @@ const createProduct = async (productRequest: ProductDtoRequest) => {
     if (productRequest.price === undefined) throw new Error('Price is required');
     if (productRequest.price <= 0) throw new Error('Price must be greater than 0');
     if (productRequest.category === '' || !productRequest.category) throw new Error('Category is required');
-    if (productRequest.description === '' || !productRequest.description) throw new Error('Description is required');
 
     return productRepo.createProduct(productRequest);
 }

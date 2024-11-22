@@ -44,8 +44,8 @@ test('[POST] /api/products/', async () => {
     product.category = generateRandomString()
     product.description = ''
     res = await req("localhost:5000").post('/api/products').send(product)
-    expect(res.status).toBe(400)
-    expect(res.body.message).toBe('Description is required')
+    expect(res.status).toBe(201)
+    expect(res.body.message).toBe('Product ' + product.name + ' created successfully')
 
     product.description = generateRandomString()
     product.imageUrl = ''
