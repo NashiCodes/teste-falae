@@ -29,11 +29,7 @@ const items = [
             {
                 url: "/clients/register",
                 title: "Registrar cliente"
-            },
-            {
-                url: "/clients/edit",
-                title: "Editar cliente"
-            }
+            }            
         ]
     },
     {

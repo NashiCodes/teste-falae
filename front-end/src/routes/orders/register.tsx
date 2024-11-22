@@ -2,7 +2,7 @@ import SideBar from "@/components/layout-sidebar.tsx";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {ChangeEvent, useEffect, useState} from "react";
 import {Client, OrderItemRegister, OrderRegister, Product} from "@/lib/types.ts";
-import {ClientRegisterTable} from "@/components/client-register-table.tsx";
+import {ClientTable} from "@/components/client-table.tsx";
 import {ClientColumns} from "@/components/clients-columns.tsx";
 import {ProductResgiterTable} from "@/components/product-register-table.tsx";
 import {ProductsColumns} from "@/components/products-columns.tsx";
@@ -89,8 +89,8 @@ export function RegisterOrder() {
                     </CardHeader>
                     <CardContent className="space-y-3 justify-center">
                         {!isClientSelected ? (
-                            <ClientRegisterTable columns={ClientColumns} data={clients}
-                                                 setSelectedClient={setSelectedClient}/>) : (
+                            <ClientTable columns={ClientColumns} data={clients}
+                                         setSelectedClient={setSelectedClient}/>) : (
                             <>
                                 {!isProductSelected ?
                                     (<ProductResgiterTable columns={ProductsColumns} data={products}

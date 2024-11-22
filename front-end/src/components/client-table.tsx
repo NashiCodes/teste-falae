@@ -25,7 +25,7 @@ interface DataTableProps<TData, TValue> {
     setSelectedClient: React.Dispatch<React.SetStateAction<Client>>
 }
 
-export function ClientRegisterTable<TData, TValue>({
+export function ClientTable<TData, TValue>({
                                                columns,
                                                data,
                                                setSelectedClient,
@@ -55,7 +55,6 @@ export function ClientRegisterTable<TData, TValue>({
 
     const handleSelect = (currentValue: Client) => {
         setSelectedClient(currentValue);
-        console.log(currentValue)
     }
 
 
